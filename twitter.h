@@ -45,7 +45,8 @@ struct unfollowUser {
 typedef struct unfollowUser unfollowUser;
 
 struct topicTime {
-	struct topic *topic;
+	char *username;
+	char *topic;
 	char *timestamp;
 };
 typedef struct topicTime topicTime;

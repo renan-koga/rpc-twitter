@@ -10,11 +10,11 @@ xdr_postTopic (XDR *xdrs, postTopic *objp)
 {
 	register int32_t *buf;
 
-	 if (!xdr_pointer (xdrs, (char **)&objp->username, sizeof (char), (xdrproc_t) xdr_char))
+	 if (!xdr_string (xdrs, &objp->username, ~0))
 		 return FALSE;
-	 if (!xdr_pointer (xdrs, (char **)&objp->topic, sizeof (char), (xdrproc_t) xdr_char))
+	 if (!xdr_string (xdrs, &objp->topic, ~0))
 		 return FALSE;
-	 if (!xdr_pointer (xdrs, (char **)&objp->text, sizeof (char), (xdrproc_t) xdr_char))
+	 if (!xdr_string (xdrs, &objp->text, ~0))
 		 return FALSE;
 	return TRUE;
 }
@@ -24,9 +24,9 @@ xdr_followUser (XDR *xdrs, followUser *objp)
 {
 	register int32_t *buf;
 
-	 if (!xdr_pointer (xdrs, (char **)&objp->username, sizeof (char), (xdrproc_t) xdr_char))
+	 if (!xdr_string (xdrs, &objp->username, ~0))
 		 return FALSE;
-	 if (!xdr_pointer (xdrs, (char **)&objp->usernameFollow, sizeof (char), (xdrproc_t) xdr_char))
+	 if (!xdr_string (xdrs, &objp->usernameFollow, ~0))
 		 return FALSE;
 	return TRUE;
 }
@@ -36,7 +36,7 @@ xdr_user (XDR *xdrs, user *objp)
 {
 	register int32_t *buf;
 
-	 if (!xdr_pointer (xdrs, (char **)&objp->username, sizeof (char), (xdrproc_t) xdr_char))
+	 if (!xdr_string (xdrs, &objp->username, ~0))
 		 return FALSE;
 	return TRUE;
 }
@@ -46,9 +46,9 @@ xdr_topic (XDR *xdrs, topic *objp)
 {
 	register int32_t *buf;
 
-	 if (!xdr_pointer (xdrs, (char **)&objp->username, sizeof (char), (xdrproc_t) xdr_char))
+	 if (!xdr_string (xdrs, &objp->username, ~0))
 		 return FALSE;
-	 if (!xdr_pointer (xdrs, (char **)&objp->topic, sizeof (char), (xdrproc_t) xdr_char))
+	 if (!xdr_string (xdrs, &objp->topic, ~0))
 		 return FALSE;
 	return TRUE;
 }
@@ -58,9 +58,9 @@ xdr_unfollowUser (XDR *xdrs, unfollowUser *objp)
 {
 	register int32_t *buf;
 
-	 if (!xdr_pointer (xdrs, (char **)&objp->username, sizeof (char), (xdrproc_t) xdr_char))
+	 if (!xdr_string (xdrs, &objp->username, ~0))
 		 return FALSE;
-	 if (!xdr_pointer (xdrs, (char **)&objp->usernameUnfollow, sizeof (char), (xdrproc_t) xdr_char))
+	 if (!xdr_string (xdrs, &objp->usernameUnfollow, ~0))
 		 return FALSE;
 	return TRUE;
 }
@@ -70,9 +70,11 @@ xdr_topicTime (XDR *xdrs, topicTime *objp)
 {
 	register int32_t *buf;
 
-	 if (!xdr_pointer (xdrs, (char **)&objp->topic, sizeof (topic), (xdrproc_t) xdr_topic))
+	 if (!xdr_string (xdrs, &objp->username, ~0))
 		 return FALSE;
-	 if (!xdr_pointer (xdrs, (char **)&objp->timestamp, sizeof (char), (xdrproc_t) xdr_char))
+	 if (!xdr_string (xdrs, &objp->topic, ~0))
+		 return FALSE;
+	 if (!xdr_string (xdrs, &objp->timestamp, ~0))
 		 return FALSE;
 	return TRUE;
 }
@@ -82,9 +84,9 @@ xdr_post (XDR *xdrs, post *objp)
 {
 	register int32_t *buf;
 
-	 if (!xdr_pointer (xdrs, (char **)&objp->username, sizeof (char), (xdrproc_t) xdr_char))
+	 if (!xdr_string (xdrs, &objp->username, ~0))
 		 return FALSE;
-	 if (!xdr_pointer (xdrs, (char **)&objp->text, sizeof (char), (xdrproc_t) xdr_char))
+	 if (!xdr_string (xdrs, &objp->text, ~0))
 		 return FALSE;
 	return TRUE;
 }

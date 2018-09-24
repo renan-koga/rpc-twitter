@@ -48,7 +48,11 @@ create_user_1_svc(user *argp, struct svc_req *rqstp)
 {
 	static int  result;
 
-	printf("\nUsuário: %s\n", argp->username);
+	// printf("\nUsuário: %s\n", argp->username);
+	/*
+	*	Código para inserir novo usuário no banco de dados.
+	*	- Caso nome já exista, retornar erro.
+	*/
 
 	return &result;
 }

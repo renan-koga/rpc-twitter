@@ -92,6 +92,8 @@ twitter_prog_1(char *host)
 }
 
 void create_user(CLIENT *clnt);
+void list_users(CLIENT *clnt);
+void follow(CLIENT *clnt);
 int main (int argc, char *argv[]) {
 	CLIENT *clnt;
 	char *host;
@@ -139,9 +141,11 @@ int main (int argc, char *argv[]) {
 				break;
 				
 			case 2:
+				list_users(clnt);
 				break;
 
 			case 3:
+				follow(clnt);
 				break;
 
 			case 4:
@@ -173,21 +177,43 @@ int main (int argc, char *argv[]) {
 
 void create_user(CLIENT *clnt) {
 	user usuario;
-	char username[3];
+	char *username;
 	int *result;
 
-	// username = (char *) malloc(5*sizeof(char));
+	username = (char *) malloc(64*sizeof(char));
 	printf("Digite o nome  do usuário a ser criado:\n");
 	scanf("%s", username);
-	// username[2] = '\0';
 
-	printf("\nUSERNAME: %s ---- %ld", username, strlen(username));
+	// printf("\nUSERNAME: %s ---- %ld", username, strlen(username));
 
 	usuario.username = username;
-	// usuario.username = (char *) malloc((int) strlen(username+1)*sizeof(char));
-	// strcpy(usuario.username, username);
-
-	// printf("\n\nUSER: %s\n\n", usuario.username);
 
 	result = create_user_1(&usuario, clnt);
+}
+
+void list_users(CLIENT *clnt) {
+	char *result;
+	void *nothing;
+
+	result = list_users_1(nothing, clnt);
+}
+
+void follow(CLIENT *clnt) {
+	int *result;
+	char *username, *usernameFollow;
+	followUser follow;
+
+	username = (char *) malloc(64*sizeof(char));
+	usernameFollow = (char *) malloc(64*sizeof(char));
+	
+	printf("Digite o seu nome de usuário:\n");
+	scanf("%s", username);
+
+	printf("Digite o nome  do usuário que você quer seguir:\n");
+	scanf("%s", usernameFollow);
+
+	follow.username = username;
+	follow.usernameFollow = usernameFollow;
+
+	result = follow_1(&follow, clnt);
 }

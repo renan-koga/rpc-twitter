@@ -2,38 +2,39 @@
 #define VERSION_NUMBER 1
 
 struct postTopic {
-  char *username;
-  char *topic;
-  char *text;
+  string username<>;
+  string topic<>;
+  string text<>;
 };
 
 struct followUser {
-  char *username;
-  char *usernameFollow;
+  string username<>;
+  string usernameFollow<>;
 };
 
 struct user {
-  char *username;
+  string username<>;
 };
 
 struct topic {
-  char *username;
-  char *topic;
+  string username<>;
+  string topic<>;
 };
 
 struct unfollowUser {
-  char *username;
-  char *usernameUnfollow;
+  string username<>;
+  string usernameUnfollow<>;
 };
 
 struct topicTime {
-  struct topic *topic;
-  char *timestamp;
+  string username<>;
+  string topic<>;
+  string timestamp<>;
 };
 
 struct post {
-  char *username;
-  char *text;
+  string username<>;
+  string text<>;
 };
 
 /* Definição da interface que será oferecida aos clientes */
