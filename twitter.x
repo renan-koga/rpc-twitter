@@ -3,8 +3,8 @@
 
 struct postTopic {
   string username<>;
-  string topic<>;
-  string text<>;
+  string topicName<>;
+  string post<>;
 };
 
 struct followUser {
@@ -18,7 +18,7 @@ struct user {
 
 struct topic {
   string username<>;
-  string topic<>;
+  string topicName<>;
 };
 
 struct unfollowUser {
@@ -28,13 +28,13 @@ struct unfollowUser {
 
 struct topicTime {
   string username<>;
-  string topic<>;
+  string topicName<>;
   string timestamp<>;
 };
 
-struct post {
+struct tweetPost {
   string username<>;
-  string text<>;
+  string post<>;
 };
 
 /* Definição da interface que será oferecida aos clientes */
@@ -48,6 +48,6 @@ program TWITTER_PROG {
     int NEW_TOPIC(topic) = 6;
     int UNFOLLOW(unfollowUser) = 7;
     string RETRIEVE_TOPIC(topicTime) = 8;
-    int TWITTE(post) = 9;
+    int TWEET(tweetPost) = 9;
   } = VERSION_NUMBER;
 } = PROGRAM_NUMBER;

@@ -16,8 +16,8 @@ extern "C" {
 
 struct postTopic {
 	char *username;
-	char *topic;
-	char *text;
+	char *topicName;
+	char *post;
 };
 typedef struct postTopic postTopic;
 
@@ -34,7 +34,7 @@ typedef struct user user;
 
 struct topic {
 	char *username;
-	char *topic;
+	char *topicName;
 };
 typedef struct topic topic;
 
@@ -46,16 +46,16 @@ typedef struct unfollowUser unfollowUser;
 
 struct topicTime {
 	char *username;
-	char *topic;
+	char *topicName;
 	char *timestamp;
 };
 typedef struct topicTime topicTime;
 
-struct post {
+struct tweetPost {
 	char *username;
-	char *text;
+	char *post;
 };
-typedef struct post post;
+typedef struct tweetPost tweetPost;
 
 #define TWITTER_PROG 1111111
 #define TWITTER_VERSION 1
@@ -85,9 +85,9 @@ extern  int * unfollow_1_svc(unfollowUser *, struct svc_req *);
 #define RETRIEVE_TOPIC 8
 extern  char ** retrieve_topic_1(topicTime *, CLIENT *);
 extern  char ** retrieve_topic_1_svc(topicTime *, struct svc_req *);
-#define TWITTE 9
-extern  int * twitte_1(post *, CLIENT *);
-extern  int * twitte_1_svc(post *, struct svc_req *);
+#define TWEET 9
+extern  int * tweet_1(tweetPost *, CLIENT *);
+extern  int * tweet_1_svc(tweetPost *, struct svc_req *);
 extern int twitter_prog_1_freeresult (SVCXPRT *, xdrproc_t, caddr_t);
 
 #else /* K&R C */
@@ -115,9 +115,9 @@ extern  int * unfollow_1_svc();
 #define RETRIEVE_TOPIC 8
 extern  char ** retrieve_topic_1();
 extern  char ** retrieve_topic_1_svc();
-#define TWITTE 9
-extern  int * twitte_1();
-extern  int * twitte_1_svc();
+#define TWEET 9
+extern  int * tweet_1();
+extern  int * tweet_1_svc();
 extern int twitter_prog_1_freeresult ();
 #endif /* K&R C */
 
@@ -130,7 +130,7 @@ extern  bool_t xdr_user (XDR *, user*);
 extern  bool_t xdr_topic (XDR *, topic*);
 extern  bool_t xdr_unfollowUser (XDR *, unfollowUser*);
 extern  bool_t xdr_topicTime (XDR *, topicTime*);
-extern  bool_t xdr_post (XDR *, post*);
+extern  bool_t xdr_tweetPost (XDR *, tweetPost*);
 
 #else /* K&R C */
 extern bool_t xdr_postTopic ();
@@ -139,7 +139,7 @@ extern bool_t xdr_user ();
 extern bool_t xdr_topic ();
 extern bool_t xdr_unfollowUser ();
 extern bool_t xdr_topicTime ();
-extern bool_t xdr_post ();
+extern bool_t xdr_tweetPost ();
 
 #endif /* K&R C */
 

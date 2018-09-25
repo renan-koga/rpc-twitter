@@ -106,7 +106,7 @@ retrieve_topic_1_svc(topicTime *argp, struct svc_req *rqstp)
 }
 
 int *
-twitte_1_svc(post *argp, struct svc_req *rqstp)
+tweet_1_svc(tweetPost *argp, struct svc_req *rqstp)
 {
 	static int  result;
 
