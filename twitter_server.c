@@ -19,7 +19,7 @@ MYSQL retornaConexao(){
 int *
 post_topic_1_svc(postTopic *argp, struct svc_req *rqstp)
 {
-	static int  result;
+	static int  result=1;
   int res;
   char *qry;
   qry = (char *)malloc(100*sizeof(char));
@@ -139,7 +139,7 @@ search_topics_1_svc(void *argp, struct svc_req *rqstp)
 				while ((linhas=mysql_fetch_row(resp)) != NULL){
           for (conta=0;conta<mysql_num_fields(resp);conta++){
 						printf("%s\t",linhas[conta]);
-						sprintf(result,"%s%s",result,linhas[conta]);
+						sprintf(result,"%s%s\n",result,linhas[conta]);
 					}
             printf("\n");
         }
@@ -153,7 +153,7 @@ search_topics_1_svc(void *argp, struct svc_req *rqstp)
 int *
 new_topic_1_svc(topic *argp, struct svc_req *rqstp)
 {
-	static int  result;
+	static int  result=1;
   int res;
 	char *qry;
 	qry = (char *)malloc(100*sizeof(char));
@@ -175,7 +175,7 @@ new_topic_1_svc(topic *argp, struct svc_req *rqstp)
 int *
 unfollow_1_svc(unfollowUser *argp, struct svc_req *rqstp)
 {
-	static int  result;
+	static int  result=1;
   int res,res2;
   MYSQL conexao = retornaConexao();
   char *qry,*qry2;
@@ -225,7 +225,7 @@ retrieve_topic_1_svc(topicTime *argp, struct svc_req *rqstp)
         while ((linhas=mysql_fetch_row(resp)) != NULL){
           for (conta=0;conta<mysql_num_fields(resp);conta++){
             printf("%s\t",linhas[conta]);
-            sprintf(result,"%s%s",result,linhas[conta]);
+            sprintf(result,"%s%s\n",result,linhas[conta]);
           }
             printf("\n");
         }
@@ -239,7 +239,7 @@ retrieve_topic_1_svc(topicTime *argp, struct svc_req *rqstp)
 int *
 tweet_1_svc(tweetPost *argp, struct svc_req *rqstp)
 {
-	static int  result;
+	static int  result=1;
   int res;
 	char *qry;
 	qry = (char *)malloc(100*sizeof(char));
