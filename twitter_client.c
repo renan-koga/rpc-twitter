@@ -4,96 +4,17 @@
  * as a guideline for developing your own functions.
  */
 
-#include <stdio.h>
-#include <string.h>
 #include "twitter.h"
-
-
-void
-twitter_prog_1(char *host)
-{
-	CLIENT *clnt;
-	postTopic  post_topic_1_arg;
-	followUser  follow_1_arg;
-	user  create_user_1_arg;
-	topic  new_topic_1_arg;
-	unfollowUser  unfollow_1_arg;
-	topicTime  retrieve_topic_1_arg;
-	post  twitte_1_arg;
-	int  *result_1;
-	int  *result_2;
-	char **result_3;
-	int  *result_4;
-	char **result_5;
-	int  *result_6;
-	int  *result_7;
-	char **result_8;
-	int  *result_9;
-	char *list_users_1_arg;
-	char *search_topics_1_arg;
-
-#ifndef	DEBUG
-	clnt = clnt_create (host, TWITTER_PROG, TWITTER_VERSION, "udp");
-
-	if (clnt == NULL) {
-		clnt_pcreateerror (host);
-		exit (1);
-	}
-#endif	/* DEBUG */
-
-	result_1 = post_topic_1(&post_topic_1_arg, clnt);
-	if (result_1 == (int *) NULL) {
-		clnt_perror (clnt, "call failed");
-	}
-
-	result_2 = follow_1(&follow_1_arg, clnt);
-	if (result_2 == (int *) NULL) {
-		clnt_perror (clnt, "call failed");
-	}
-
-	result_3 = list_users_1((void*)&list_users_1_arg, clnt);
-	if (result_3 == (char **) NULL) {
-		clnt_perror (clnt, "call failed");
-	}
-
-	result_4 = create_user_1(&create_user_1_arg, clnt);
-	if (result_4 == (int *) NULL) {
-		clnt_perror (clnt, "call failed");
-	}
-
-	result_5 = search_topics_1((void*)&search_topics_1_arg, clnt);
-	if (result_5 == (char **) NULL) {
-		clnt_perror (clnt, "call failed");
-	}
-
-	result_6 = new_topic_1(&new_topic_1_arg, clnt);
-	if (result_6 == (int *) NULL) {
-		clnt_perror (clnt, "call failed");
-	}
-
-	result_7 = unfollow_1(&unfollow_1_arg, clnt);
-	if (result_7 == (int *) NULL) {
-		clnt_perror (clnt, "call failed");
-	}
-
-	result_8 = retrieve_topic_1(&retrieve_topic_1_arg, clnt);
-	if (result_8 == (char **) NULL) {
-		clnt_perror (clnt, "call failed");
-	}
-
-	result_9 = twitte_1(&twitte_1_arg, clnt);
-	if (result_9 == (int *) NULL) {
-		clnt_perror (clnt, "call failed");
-	}
-
-#ifndef	DEBUG
-	clnt_destroy (clnt);
-#endif	 /* DEBUG */
-}
 
 void create_user(CLIENT *clnt);
 void list_users(CLIENT *clnt);
 void follow(CLIENT *clnt);
+void unfollow(CLIENT *clnt);
+void tweet(CLIENT *clnt);
+void new_topic(CLIENT *clnt);
+void search_topics(CLIENT *clnt);
+void post_topic(CLIENT *clnt);
+void retrieve_topic(CLIENT *clnt);
 int main (int argc, char *argv[]) {
 	CLIENT *clnt;
 	char *host;
@@ -149,21 +70,27 @@ int main (int argc, char *argv[]) {
 				break;
 
 			case 4:
+				unfollow(clnt);
 				break;
 
 			case 5:
+				tweet(clnt);
 				break;
 
 			case 6:
+				new_topic(clnt);
 				break;
 
 			case 7:
+				search_topics(clnt);
 				break;
 
 			case 8:
+				post_topic(clnt);
 				break;
 
 			case 9:
+				retrieve_topic(clnt);
 				break;
 
 			default:
@@ -189,19 +116,29 @@ void create_user(CLIENT *clnt) {
 	usuario.username = username;
 
 	result = create_user_1(&usuario, clnt);
+
+	if (result == (int *) NULL) {
+		clnt_perror (clnt, "call failed");
+	}
+	else if (*result == 1) {
+		printf("\nUsuário %s criado com sucesso!", username);
+	}
+	else {
+		printf("Falha ao criar o usuário %s", username);
+	}
 }
 
 void list_users(CLIENT *clnt) {
-	char *result;
 	void *nothing;
+	char *result;
 
-	result = list_users_1(nothing, clnt);
+	result = (char *) list_users_1(nothing, clnt);
 }
 
 void follow(CLIENT *clnt) {
+	followUser follow;
 	int *result;
 	char *username, *usernameFollow;
-	followUser follow;
 
 	username = (char *) malloc(64*sizeof(char));
 	usernameFollow = (char *) malloc(64*sizeof(char));
@@ -209,11 +146,178 @@ void follow(CLIENT *clnt) {
 	printf("Digite o seu nome de usuário:\n");
 	scanf("%s", username);
 
-	printf("Digite o nome  do usuário que você quer seguir:\n");
+	printf("Digite o nome do usuário que deseja seguir:\n");
 	scanf("%s", usernameFollow);
 
 	follow.username = username;
 	follow.usernameFollow = usernameFollow;
 
 	result = follow_1(&follow, clnt);
+
+	if (result == (int *) NULL) {
+		clnt_perror (clnt, "call failed");
+	}
+	else if (*result == 1) {
+		printf("\nVocê está seguindo usuário o %s!", usernameFollow);
+	}
+	else {
+		printf("Falha ao seguir o usuário %s", usernameFollow);
+	}
+}
+
+void unfollow(CLIENT *clnt) {
+	unfollowUser unfollow;
+	int *result;
+	char *username, *usernameUnfollow;
+
+	username = (char *) malloc(64*sizeof(char));
+	usernameUnfollow = (char *) malloc(64*sizeof(char));
+	
+	printf("Digite o seu nome de usuário:\n");
+	scanf("%s", username);
+
+	printf("Digite o nome do usuário que deseja deixar de seguir:\n");
+	scanf("%s", usernameUnfollow);
+
+	unfollow.username = username;
+	unfollow.usernameUnfollow = usernameUnfollow;
+
+	result = unfollow_1(&unfollow, clnt);
+
+	if (result == (int *) NULL) {
+		clnt_perror (clnt, "call failed");
+	}
+	else if (*result == 1) {
+		printf("\nVocê não está mais seguindo o usuário %s!", usernameUnfollow);
+	}
+	else {
+		printf("Falha ao deixar de seguir o usuário %s", usernameUnfollow);
+	}
+}
+
+void tweet(CLIENT *clnt) {
+	tweetPost tweet;
+	int *result;
+	char *username, *post;
+
+	username = (char *) malloc(64*sizeof(char));
+	post = (char *) malloc(128*sizeof(char));
+
+	printf("Digite o seu nome de usuário:\n");
+	scanf("%s", username);
+
+	printf("Digite seu post (sem quebras de linhas):\n");
+	scanf("%[^\n]", post);
+
+	tweet.username = username;
+	tweet.post = post;
+
+	result = tweet_1(&tweet, clnt);
+
+	if (result == (int *) NULL) {
+		clnt_perror (clnt, "call failed");
+	}
+	else if (*result == 1) {
+		printf("\nTweet efetuado com sucesso!");
+	}
+	else {
+		printf("Falha no tweet");
+	}
+}
+
+void new_topic(CLIENT *clnt) {
+	topic newTopic;
+	int *result;
+	char *username, *topicName;
+
+	username = (char *) malloc(64*sizeof(char));
+	topicName = (char *) malloc(128*sizeof(char));
+
+	printf("Digite o seu nome de usuário:\n");
+	scanf("%s", username);
+
+	printf("Digite o novo tópico:\n");
+	scanf("%s", topicName);
+
+	newTopic.username = username;
+	newTopic.topicName = topicName;
+
+	result = new_topic_1(&newTopic, clnt);
+
+	if (result == (int *) NULL) {
+		clnt_perror (clnt, "call failed");
+	}
+	else if (*result == 1) {
+		printf("\nTópico %s criado com sucesso!", topicName);
+	}
+	else {
+		printf("Falha ao criar o tópico %s...", topicName);
+	}
+}
+
+void search_topics(CLIENT *clnt) {
+	void *nothing;
+	char *result;
+
+	result = (char *) search_topics_1(nothing, clnt);
+}
+
+void post_topic(CLIENT *clnt) {
+	postTopic newPostTopic;
+	int *result;
+	char *username, *topicName, *post;
+
+	username = (char *) malloc(64*sizeof(char));
+	topicName = (char *) malloc(128*sizeof(char));
+	post = (char *) malloc(128*sizeof(char));
+
+	printf("Digite o seu nome de usuário:\n");
+	scanf("%s", username);
+
+	printf("Digite o novo tópico:\n");
+	scanf("%s", topicName);
+
+	printf("Digite seu post (sem quebras de linhas):\n");
+	scanf("%[^\n]", post);
+
+	newPostTopic.username = username;
+	newPostTopic.topicName = topicName;
+	newPostTopic.post = post;
+
+	result = post_topic_1(&newPostTopic, clnt);
+
+	if (result == (int *) NULL) {
+		clnt_perror (clnt, "call failed");
+	}
+	else if (*result == 1) {
+		printf("\nPost enviado com sucesso no tópico %s!", topicName);
+	}
+	else {
+		printf("Falha ao postar no tópico %s...", topicName);
+	}
+}
+
+void retrieve_topic(CLIENT *clnt) {
+	topicTime retrieveTopic;
+	char *result;
+	char *username, *topicName, *timestamp;
+
+	username = (char *) malloc(64*sizeof(char));
+	topicName = (char *) malloc(128*sizeof(char));
+	timestamp = (char *) malloc(64*sizeof(char));
+
+	printf("Digite o seu nome de usuário:\n");
+	scanf("%s", username);
+
+	printf("Digite o novo tópico:\n");
+	scanf("%s", topicName);
+
+	printf("Digite seu post (sem quebras de linhas):\n");
+	scanf("%s", timestamp);
+
+	retrieveTopic.username = username;
+	retrieveTopic.topicName = topicName;
+	retrieveTopic.timestamp = timestamp;
+
+	result = (char *) retrieve_topic_1(&retrieveTopic, clnt);
 }

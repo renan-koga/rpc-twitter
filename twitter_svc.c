@@ -26,7 +26,7 @@ twitter_prog_1(struct svc_req *rqstp, register SVCXPRT *transp)
 		topic new_topic_1_arg;
 		unfollowUser unfollow_1_arg;
 		topicTime retrieve_topic_1_arg;
-		post twitte_1_arg;
+		tweetPost tweet_1_arg;
 	} argument;
 	char *result;
 	xdrproc_t _xdr_argument, _xdr_result;
@@ -85,10 +85,10 @@ twitter_prog_1(struct svc_req *rqstp, register SVCXPRT *transp)
 		local = (char *(*)(char *, struct svc_req *)) retrieve_topic_1_svc;
 		break;
 
-	case TWITTE:
-		_xdr_argument = (xdrproc_t) xdr_post;
+	case TWEET:
+		_xdr_argument = (xdrproc_t) xdr_tweetPost;
 		_xdr_result = (xdrproc_t) xdr_int;
-		local = (char *(*)(char *, struct svc_req *)) twitte_1_svc;
+		local = (char *(*)(char *, struct svc_req *)) tweet_1_svc;
 		break;
 
 	default:

@@ -12,9 +12,9 @@ xdr_postTopic (XDR *xdrs, postTopic *objp)
 
 	 if (!xdr_string (xdrs, &objp->username, ~0))
 		 return FALSE;
-	 if (!xdr_string (xdrs, &objp->topic, ~0))
+	 if (!xdr_string (xdrs, &objp->topicName, ~0))
 		 return FALSE;
-	 if (!xdr_string (xdrs, &objp->text, ~0))
+	 if (!xdr_string (xdrs, &objp->post, ~0))
 		 return FALSE;
 	return TRUE;
 }
@@ -48,7 +48,7 @@ xdr_topic (XDR *xdrs, topic *objp)
 
 	 if (!xdr_string (xdrs, &objp->username, ~0))
 		 return FALSE;
-	 if (!xdr_string (xdrs, &objp->topic, ~0))
+	 if (!xdr_string (xdrs, &objp->topicName, ~0))
 		 return FALSE;
 	return TRUE;
 }
@@ -72,7 +72,7 @@ xdr_topicTime (XDR *xdrs, topicTime *objp)
 
 	 if (!xdr_string (xdrs, &objp->username, ~0))
 		 return FALSE;
-	 if (!xdr_string (xdrs, &objp->topic, ~0))
+	 if (!xdr_string (xdrs, &objp->topicName, ~0))
 		 return FALSE;
 	 if (!xdr_string (xdrs, &objp->timestamp, ~0))
 		 return FALSE;
@@ -80,13 +80,13 @@ xdr_topicTime (XDR *xdrs, topicTime *objp)
 }
 
 bool_t
-xdr_post (XDR *xdrs, post *objp)
+xdr_tweetPost (XDR *xdrs, tweetPost *objp)
 {
 	register int32_t *buf;
 
 	 if (!xdr_string (xdrs, &objp->username, ~0))
 		 return FALSE;
-	 if (!xdr_string (xdrs, &objp->text, ~0))
+	 if (!xdr_string (xdrs, &objp->post, ~0))
 		 return FALSE;
 	return TRUE;
 }
