@@ -23,7 +23,7 @@ post_topic_1_svc(postTopic *argp, struct svc_req *rqstp)
   int res;
   char *qry;
   qry = (char *)malloc(100*sizeof(char));
-  sprintf(qry,"INSERT INTO post_topic(username,topic,post,time_post) values('%s','%s','%s',NOW());",argp->username,argp->topic,argp->text);
+  sprintf(qry,"INSERT INTO post_topic(username,topic,post,time_post) values('%s','%s','%s',NOW());",argp->username,argp->topicName,argp->post);
   MYSQL conexao = retornaConexao();
   res = mysql_query(&conexao,qry);
   mysql_close(&conexao);
@@ -157,7 +157,7 @@ new_topic_1_svc(topic *argp, struct svc_req *rqstp)
   int res;
 	char *qry;
 	qry = (char *)malloc(100*sizeof(char));
-	sprintf(qry,"INSERT INTO topic(name,username) values('%s','%s');",argp->topic,argp->username);
+	sprintf(qry,"INSERT INTO topic(name,username) values('%s','%s');",argp->topicName,argp->username);
 	MYSQL conexao = retornaConexao();
 	res = mysql_query(&conexao,qry);
 	mysql_close(&conexao);
@@ -181,8 +181,8 @@ unfollow_1_svc(unfollowUser *argp, struct svc_req *rqstp)
   char *qry,*qry2;
 	qry = (char *)malloc(100*sizeof(char));
   qry2 = (char *)malloc(100*sizeof(char));
-	// sprintf(qry,"DELETE from following where username = '%s' and following = '%s';",argp->username,argp->usernameFollow);
-  // sprintf(qry2,"DELETE from followers where username = '%s' and follow = '%s';",argp->usernameFollow,argp->username);
+	sprintf(qry,"DELETE from following where username = '%s' and following = '%s';",argp->username,argp->usernameUnfollow);
+  sprintf(qry2,"DELETE from followers where username = '%s' and follow = '%s';",argp->usernameUnfollow,argp->username);
   res = mysql_query(&conexao,qry);
   res2 = mysql_query(&conexao,qry2);
   free(qry);
@@ -243,7 +243,7 @@ tweet_1_svc(tweetPost *argp, struct svc_req *rqstp)
   int res;
 	char *qry;
 	qry = (char *)malloc(100*sizeof(char));
-	sprintf(qry,"INSERT INTO twitte(username,post) values('%s','%s');",argp->username,argp->text);
+	sprintf(qry,"INSERT INTO twitte(username,post) values('%s','%s');",argp->username,argp->post);
 	MYSQL conexao = retornaConexao();
 	res = mysql_query(&conexao,qry);
 	mysql_close(&conexao);
