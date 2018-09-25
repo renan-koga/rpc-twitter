@@ -133,6 +133,8 @@ void list_users(CLIENT *clnt) {
 	char *result;
 
 	result = (char *) list_users_1(nothing, clnt);
+
+	printf("TAM: %s", result);
 }
 
 void follow(CLIENT *clnt) {
@@ -206,8 +208,10 @@ void tweet(CLIENT *clnt) {
 	printf("Digite o seu nome de usuário:\n");
 	scanf("%s", username);
 
+	fflush(stdin);
+
 	printf("Digite seu post (sem quebras de linhas):\n");
-	scanf("%[^\n]", post);
+	scanf(" %[^\n]", post);
 
 	tweet.username = username;
 	tweet.post = post;
@@ -277,8 +281,10 @@ void post_topic(CLIENT *clnt) {
 	printf("Digite o novo tópico:\n");
 	scanf("%s", topicName);
 
+	fflush(stdin);
+
 	printf("Digite seu post (sem quebras de linhas):\n");
-	scanf("%[^\n]", post);
+	scanf(" %[^\n]", post);
 
 	newPostTopic.username = username;
 	newPostTopic.topicName = topicName;
