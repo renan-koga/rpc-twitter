@@ -39,7 +39,7 @@ $(CLIENT) : $(OBJECTS_CLNT)
 	$(LINK.c) -o $(CLIENT) $(OBJECTS_CLNT) $(LDLIBS) 
 
 $(SERVER) : $(OBJECTS_SVC) 
-	$(LINK.c) -o $(SERVER) $(OBJECTS_SVC) $(LDLIBS)
+	$(LINK.c) -o $(SERVER) $(OBJECTS_SVC) $(LDLIBS) `mysql_config --cflags --libs`
 
  clean:
 	 $(RM) core $(TARGETS) $(OBJECTS_CLNT) $(OBJECTS_SVC) $(CLIENT) $(SERVER)

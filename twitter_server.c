@@ -4,87 +4,197 @@
  * as a guideline for developing your own functions.
  */
 
+ #include <mysql/mysql.h>
 #include <stdio.h>
 #include "twitter.h"
+
+MYSQL retornaConexao(){
+	MYSQL conexao;
+	mysql_init(&conexao);
+	if (mysql_real_connect(&conexao, "localhost", "root", "root", "twitter", 0, NULL, 0) ){
+		return conexao;
+	}
+}
 
 int *
 post_topic_1_svc(postTopic *argp, struct svc_req *rqstp)
 {
 	static int  result;
-
-	/*
-	 * insert server code here
-	 */
-
-	return &result;
+  int res;
+  char *qry;
+  qry = (char *)malloc(100*sizeof(char));
+  sprintf(qry,"INSERT INTO post_topic(username,topic,post,time_post) values('%s','%s','%s',NOW());",argp->username,argp->topic,argp->text);
+  MYSQL conexao = retornaConexao();
+  res = mysql_query(&conexao,qry);
+  mysql_close(&conexao);
+  free(qry);
+  if(!res)
+    return &result;
+  else{
+    result=0;
+    printf("ERRO\n");
+    return &result;
+  }
 }
 
 int *
 follow_1_svc(followUser *argp, struct svc_req *rqstp)
 {
-	static int  result;
+	static int  result=1;
+  int res,res2;
+  MYSQL conexao = retornaConexao();
+  char *qry,*qry2;
+	qry = (char *)malloc(100*sizeof(char));
+  qry2 = (char *)malloc(100*sizeof(char));
+	sprintf(qry,"INSERT INTO following(username,following) values('%s','%s');",argp->username,argp->usernameFollow);
+  sprintf(qry2,"INSERT INTO followers(username,follow) values('%s','%s');",argp->usernameFollow,argp->username);
+  res = mysql_query(&conexao,qry);
+  res2 = mysql_query(&conexao,qry2);
+  free(qry);
+  free(qry2);
+	mysql_close(&conexao);
+  if(res && res2){
+    printf("Erro\n");
+    result=0;
+    return &result;
+  }
+  else
+    return &result;
 
-	/*
-	 * insert server code here
-	 */
-
-	return &result;
 }
 
 char **
 list_users_1_svc(void *argp, struct svc_req *rqstp)
 {
 	static char * result;
+	result = (char*)calloc(10000,sizeof(char));
+	MYSQL_RES *resp;
+  MYSQL_ROW linhas;
+  MYSQL_FIELD *campos;
+	MYSQL conexao = retornaConexao();
+	int conta;
+  char qry[]="SELECT * FROM usuario;";
+		if(mysql_query(&conexao,qry)){
+			printf("ERRO\n");
+		}
+		else{
+			resp = mysql_store_result(&conexao);//recebe a consulta
+			if (resp){ //se houver consulta
+				while ((linhas=mysql_fetch_row(resp)) != NULL){
+          for (conta=0;conta<mysql_num_fields(resp);conta++){
+						printf("%s\t",linhas[conta]);
+						sprintf(result,"%s%s",result,linhas[conta]);
+					}
+            printf("\n");
+        }
+			}
+			mysql_free_result(resp);//limpa a variável do resultado: resp
+		}
 
-	/*
-	 * insert server code here
-	 */
+	mysql_close(&conexao);
+  printf("result: %s\n",result);
+  return &result;
 
-	return &result;
 }
 
 int *
 create_user_1_svc(user *argp, struct svc_req *rqstp)
 {
-	static int  result;
+	static int  result=1;
+	int res;
+	char *qry;
+	qry = (char *)malloc(100*sizeof(char));
+	sprintf(qry,"INSERT INTO usuario(username) values('%s');",argp->username);
+	MYSQL conexao = retornaConexao();
+	res = mysql_query(&conexao,qry);
+	mysql_close(&conexao);
+	free(qry);
+	if(!res)
+		return &result;
+	else{
+		result=0;
+		printf("ERRO\n");
+		return &result;
+	}
 
-	// printf("\nUsuário: %s\n", argp->username);
-	/*
-	*	Código para inserir novo usuário no banco de dados.
-	*	- Caso nome já exista, retornar erro.
-	*/
-
-	return &result;
 }
 
 char **
 search_topics_1_svc(void *argp, struct svc_req *rqstp)
 {
 	static char * result;
-
-	/*
-	 * insert server code here
-	 */
-
-	return &result;
+  result = (char*)calloc(10000,sizeof(char));
+	MYSQL_RES *resp;
+  MYSQL_ROW linhas;
+  MYSQL_FIELD *campos;
+	MYSQL conexao = retornaConexao();
+	int conta;
+  char qry[]="SELECT name FROM topic;";
+		if(mysql_query(&conexao,qry)){
+			printf("ERRO\n");
+		}
+		else{
+			resp = mysql_store_result(&conexao);//recebe a consulta
+			if (resp){ //se houver consulta
+				while ((linhas=mysql_fetch_row(resp)) != NULL){
+          for (conta=0;conta<mysql_num_fields(resp);conta++){
+						printf("%s\t",linhas[conta]);
+						sprintf(result,"%s%s",result,linhas[conta]);
+					}
+            printf("\n");
+        }
+			}
+			mysql_free_result(resp);//limpa a variável do resultado: resp
+		}
+	mysql_close(&conexao);
+  return &result;
 }
 
 int *
 new_topic_1_svc(topic *argp, struct svc_req *rqstp)
 {
 	static int  result;
+  int res;
+	char *qry;
+	qry = (char *)malloc(100*sizeof(char));
+	sprintf(qry,"INSERT INTO topic(name,username) values('%s','%s');",argp->topic,argp->username);
+	MYSQL conexao = retornaConexao();
+	res = mysql_query(&conexao,qry);
+	mysql_close(&conexao);
+	free(qry);
+	if(!res)
+		return &result;
+	else{
+		result=0;
+		printf("ERRO\n");
+		return &result;
+	}
 
-	/*
-	 * insert server code here
-	 */
-
-	return &result;
 }
 
 int *
 unfollow_1_svc(unfollowUser *argp, struct svc_req *rqstp)
 {
 	static int  result;
+  int res,res2;
+  MYSQL conexao = retornaConexao();
+  char *qry,*qry2;
+	qry = (char *)malloc(100*sizeof(char));
+  qry2 = (char *)malloc(100*sizeof(char));
+	// sprintf(qry,"DELETE from following where username = '%s' and following = '%s';",argp->username,argp->usernameFollow);
+  // sprintf(qry2,"DELETE from followers where username = '%s' and follow = '%s';",argp->usernameFollow,argp->username);
+  res = mysql_query(&conexao,qry);
+  res2 = mysql_query(&conexao,qry2);
+  free(qry);
+  free(qry2);
+	mysql_close(&conexao);
+  if(res && res2){
+    printf("Erro\n");
+    result=0;
+    return &result;
+  }
+  else
+    return &result;
 
 	/*
 	 * insert server code here
@@ -97,22 +207,53 @@ char **
 retrieve_topic_1_svc(topicTime *argp, struct svc_req *rqstp)
 {
 	static char * result;
-
-	/*
-	 * insert server code here
-	 */
-
-	return &result;
+  result = (char*)calloc(10000,sizeof(char));
+  MYSQL_RES *resp;
+  MYSQL_ROW linhas;
+  MYSQL_FIELD *campos;
+  MYSQL conexao = retornaConexao();
+  int conta;
+  char *qry;
+  qry = (char *)malloc(100*sizeof(char));
+  sprintf(qry,"SELECT post FROM post_topic where time_post > '%s';",argp->timestamp);
+    if(mysql_query(&conexao,qry)){
+      printf("ERRO\n");
+    }
+    else{
+      resp = mysql_store_result(&conexao);//recebe a consulta
+      if (resp){ //se houver consulta
+        while ((linhas=mysql_fetch_row(resp)) != NULL){
+          for (conta=0;conta<mysql_num_fields(resp);conta++){
+            printf("%s\t",linhas[conta]);
+            sprintf(result,"%s%s",result,linhas[conta]);
+          }
+            printf("\n");
+        }
+      }
+      mysql_free_result(resp);//limpa a variável do resultado: resp
+    }
+  mysql_close(&conexao);
+  return &result;
 }
 
 int *
 twitte_1_svc(post *argp, struct svc_req *rqstp)
 {
 	static int  result;
+  int res;
+	char *qry;
+	qry = (char *)malloc(100*sizeof(char));
+	sprintf(qry,"INSERT INTO twitte(username,post) values('%s','%s');",argp->username,argp->text);
+	MYSQL conexao = retornaConexao();
+	res = mysql_query(&conexao,qry);
+	mysql_close(&conexao);
+	free(qry);
+	if(!res)
+		return &result;
+	else{
+		result=0;
+		printf("ERRO\n");
+		return &result;
+	}
 
-	/*
-	 * insert server code here
-	 */
-
-	return &result;
 }
