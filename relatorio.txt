@@ -1,0 +1,31 @@
+#######################################################################
+############ Passos para compilação e execução do programa ############
+#######################################################################
+
+1. Compilar os arquivos fontes
+  make -f Makefile.twitter
+
+2. Após a compilação dos arquivos, execute o servidor
+  ./twitter_server
+
+3. Em seguida execute o cliente
+  ./twitter_client <ip>
+
+  Ex: ./twitter_client localhost
+
+
+#######################################################################
+################### Melhorias para a próxima versão ###################
+#######################################################################
+
+Na próxima versão poderia ser implementada um sisteminha de login 
+(username e senha), para orgranizar melhor o fluxo de dados. Para
+implementar essa funcionalidade precisaríamos que o usuário fornecesse
+os dados no cliente, e o servidor verificasse os dados para verificar
+o login é válido.
+
+Poderia ser melhorado também a formatação de retorno das strings ao
+listar os usuários do sistema ou dos post recuperados a partir de uma
+data específica e tópico específico, a formatação melhorada poderia ser
+no formato de uma tabela para melhor visualização dos dados. Para isso,
+seria necessário ajustar a string de retorno no servidor.
