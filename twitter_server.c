@@ -83,7 +83,7 @@ list_users_1_svc(void *argp, struct svc_req *rqstp)
 				while ((linhas=mysql_fetch_row(resp)) != NULL){
           for (conta=0;conta<mysql_num_fields(resp);conta++){
 						printf("%s\t",linhas[conta]);
-						sprintf(result,"%s%s",result,linhas[conta]);
+						sprintf(result,"%s%s\n",result,linhas[conta]);
 					}
             printf("\n");
         }
