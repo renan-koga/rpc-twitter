@@ -130,11 +130,11 @@ void create_user(CLIENT *clnt) {
 
 void list_users(CLIENT *clnt) {
 	void *nothing;
-	char *result;
+	char **result;
 
-	result = (char *) list_users_1(nothing, clnt);
+	result = list_users_1(nothing, clnt);
 
-	printf("TAM: %s", result);
+	printf("Usuários:\n%s", *result);
 }
 
 void follow(CLIENT *clnt) {
@@ -261,9 +261,11 @@ void new_topic(CLIENT *clnt) {
 
 void search_topics(CLIENT *clnt) {
 	void *nothing;
-	char *result;
+	char **result;
 
-	result = (char *) search_topics_1(nothing, clnt);
+	result = search_topics_1(nothing, clnt);
+
+	printf("Tópicos:\n%s", *result);
 }
 
 void post_topic(CLIENT *clnt) {
@@ -318,7 +320,7 @@ void retrieve_topic(CLIENT *clnt) {
 	printf("Digite o novo tópico:\n");
 	scanf("%s", topicName);
 
-	printf("Digite seu post (sem quebras de linhas):\n");
+	printf("Digite a data (dd/MM/yyyy):\n");
 	scanf("%s", timestamp);
 
 	retrieveTopic.username = username;
