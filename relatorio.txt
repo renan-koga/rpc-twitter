@@ -1,3 +1,8 @@
+
+EDUARDO HENRIQUE GIROTO
+RENAN YUJI KOGA FERREIRA
+
+
 #######################################################################
 ############ Passos para compilação e execução do programa ############
 #######################################################################
@@ -12,6 +17,8 @@
   ./twitter_client <ip>
 
   Ex: ./twitter_client localhost
+
+Obs : Deve ter instalado o mysql-server em sua máquina, junto com o banco de dados twitter na base de dados.
 
 
 #######################################################################
