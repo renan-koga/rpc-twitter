@@ -108,7 +108,7 @@ void create_user(CLIENT *clnt) {
 	int *result;
 
 	username = (char *) malloc(64*sizeof(char));
-	printf("Digite o nome  do usuário a ser criado:\n");
+	printf("Digite o nome  do usuário a ser criado (@nome):\n");
 	scanf("%s", username);
 
 	// printf("\nUSERNAME: %s ---- %ld", username, strlen(username));
@@ -120,7 +120,7 @@ void create_user(CLIENT *clnt) {
 	if (result == (int *) NULL) {
 		clnt_perror (clnt, "call failed");
 	}
-	else if (*result == 1) {
+	if (*result == 1) {
 		printf("\nUsuário %s criado com sucesso!", username);
 	}
 	else {
@@ -159,7 +159,7 @@ void follow(CLIENT *clnt) {
 	if (result == (int *) NULL) {
 		clnt_perror (clnt, "call failed");
 	}
-	else if (*result == 1) {
+	if (*result == 1) {
 		printf("\nVocê está seguindo usuário o %s!", usernameFollow);
 	}
 	else {
@@ -189,7 +189,7 @@ void unfollow(CLIENT *clnt) {
 	if (result == (int *) NULL) {
 		clnt_perror (clnt, "call failed");
 	}
-	else if (*result == 1) {
+	if (*result == 1) {
 		printf("\nVocê não está mais seguindo o usuário %s!", usernameUnfollow);
 	}
 	else {
@@ -221,7 +221,7 @@ void tweet(CLIENT *clnt) {
 	if (result == (int *) NULL) {
 		clnt_perror (clnt, "call failed");
 	}
-	else if (*result == 1) {
+	if (*result == 1) {
 		printf("\nTweet efetuado com sucesso!");
 	}
 	else {
@@ -251,7 +251,7 @@ void new_topic(CLIENT *clnt) {
 	if (result == (int *) NULL) {
 		clnt_perror (clnt, "call failed");
 	}
-	else if (*result == 1) {
+	if (*result == 1) {
 		printf("\nTópico %s criado com sucesso!", topicName);
 	}
 	else {
@@ -280,7 +280,7 @@ void post_topic(CLIENT *clnt) {
 	printf("Digite o seu nome de usuário:\n");
 	scanf("%s", username);
 
-	printf("Digite o novo tópico:\n");
+	printf("Digite o tópico em que deseja postar:\n");
 	scanf("%s", topicName);
 
 	fflush(stdin);
@@ -297,7 +297,7 @@ void post_topic(CLIENT *clnt) {
 	if (result == (int *) NULL) {
 		clnt_perror (clnt, "call failed");
 	}
-	else if (*result == 1) {
+	if (*result == 1) {
 		printf("\nPost enviado com sucesso no tópico %s!", topicName);
 	}
 	else {
@@ -307,7 +307,7 @@ void post_topic(CLIENT *clnt) {
 
 void retrieve_topic(CLIENT *clnt) {
 	topicTime retrieveTopic;
-	char *result;
+	char **result;
 	char *username, *topicName, *timestamp;
 
 	username = (char *) malloc(64*sizeof(char));
@@ -320,12 +320,14 @@ void retrieve_topic(CLIENT *clnt) {
 	printf("Digite o novo tópico:\n");
 	scanf("%s", topicName);
 
-	printf("Digite a data (dd/MM/yyyy):\n");
+	printf("Digite a data (yyyy/MM/dd):\n");
 	scanf("%s", timestamp);
 
 	retrieveTopic.username = username;
 	retrieveTopic.topicName = topicName;
 	retrieveTopic.timestamp = timestamp;
 
-	result = (char *) retrieve_topic_1(&retrieveTopic, clnt);
+	result = retrieve_topic_1(&retrieveTopic, clnt);
+
+	printf("%s", *result);
 }
