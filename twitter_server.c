@@ -28,8 +28,10 @@ post_topic_1_svc(postTopic *argp, struct svc_req *rqstp)
   res = mysql_query(&conexao,qry);
   mysql_close(&conexao);
   free(qry);
-  if(!res)
+  if(!res){
+    printf("Usuário %s criou um post-topic\n",argp->username);
     return &result;
+  }
   else{
     result=0;
     printf("ERRO\n");
@@ -58,8 +60,10 @@ follow_1_svc(followUser *argp, struct svc_req *rqstp)
     result=0;
     return &result;
   }
-  else
+  else{
+    printf("Usuário %s seguiu %s\n",argp->username,argp->usernameFollow);
     return &result;
+  }
 
 }
 
@@ -82,17 +86,15 @@ list_users_1_svc(void *argp, struct svc_req *rqstp)
 			if (resp){ //se houver consulta
 				while ((linhas=mysql_fetch_row(resp)) != NULL){
           for (conta=0;conta<mysql_num_fields(resp);conta++){
-						printf("%s\t",linhas[conta]);
 						sprintf(result,"%s%s\n",result,linhas[conta]);
 					}
-            printf("\n");
         }
 			}
 			mysql_free_result(resp);//limpa a variável do resultado: resp
 		}
 
+  printf("Listou usuários\n");
 	mysql_close(&conexao);
-  printf("result: %s\n",result);
   return &result;
 
 }
@@ -109,8 +111,10 @@ create_user_1_svc(user *argp, struct svc_req *rqstp)
 	res = mysql_query(&conexao,qry);
 	mysql_close(&conexao);
 	free(qry);
-	if(!res)
-		return &result;
+	if(!res){
+    printf("Criou usuário %s\n",argp->username);
+    return &result;
+  }
 	else{
 		result=0;
 		printf("ERRO\n");
@@ -138,7 +142,6 @@ search_topics_1_svc(void *argp, struct svc_req *rqstp)
 			if (resp){ //se houver consulta
 				while ((linhas=mysql_fetch_row(resp)) != NULL){
           for (conta=0;conta<mysql_num_fields(resp);conta++){
-						printf("%s\t",linhas[conta]);
 						sprintf(result,"%s%s\n",result,linhas[conta]);
 					}
             printf("\n");
@@ -146,6 +149,7 @@ search_topics_1_svc(void *argp, struct svc_req *rqstp)
 			}
 			mysql_free_result(resp);//limpa a variável do resultado: resp
 		}
+    printf("Procurou tópicos\n");
 	mysql_close(&conexao);
   return &result;
 }
@@ -162,8 +166,10 @@ new_topic_1_svc(topic *argp, struct svc_req *rqstp)
 	res = mysql_query(&conexao,qry);
 	mysql_close(&conexao);
 	free(qry);
-	if(!res)
-		return &result;
+	if(!res){
+    printf("Usuário %s criou novo tópico\n",argp->username);
+    return &result;
+  }
 	else{
 		result=0;
 		printf("ERRO\n");
@@ -193,8 +199,10 @@ unfollow_1_svc(unfollowUser *argp, struct svc_req *rqstp)
     result=0;
     return &result;
   }
-  else
+  else{
+    printf("Deixou de seguir\n");
     return &result;
+  }
 
 	/*
 	 * insert server code here
@@ -224,14 +232,15 @@ retrieve_topic_1_svc(topicTime *argp, struct svc_req *rqstp)
       if (resp){ //se houver consulta
         while ((linhas=mysql_fetch_row(resp)) != NULL){
           for (conta=0;conta<mysql_num_fields(resp);conta++){
-            printf("%s\t",linhas[conta]);
             sprintf(result,"%s%s\n",result,linhas[conta]);
           }
-            printf("\n");
         }
+        // printf("Foi buscado um determinado post em um tópico \n");
       }
+
       mysql_free_result(resp);//limpa a variável do resultado: resp
     }
+    
   mysql_close(&conexao);
   return &result;
 }
@@ -248,8 +257,10 @@ tweet_1_svc(tweetPost *argp, struct svc_req *rqstp)
 	res = mysql_query(&conexao,qry);
 	mysql_close(&conexao);
 	free(qry);
-	if(!res)
-		return &result;
+	if(!res){
+    printf("Usuário %s acabou de twittar\n",argp->username);
+    return &result;
+  }
 	else{
 		result=0;
 		printf("ERRO\n");
